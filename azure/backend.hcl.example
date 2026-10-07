@@ -1,0 +1,5 @@
+# Copy to private backend.hcl only after choosing a state store you own.
+resource_group_name  = "replace-with-your-state-resource-group"
+storage_account_name = "replacewithyourstateaccount"
+container_name       = "tfstate"
+key                  = "getlink-example/azure/terraform.tfstate"

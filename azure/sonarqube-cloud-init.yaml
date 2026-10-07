@@ -1,0 +1,32 @@
+#cloud-config
+package_update: true
+package_upgrade: false
+
+packages:
+  - ca-certificates
+  - curl
+  - gnupg
+  - openssl
+
+ssh_pwauth: false
+disable_root: true
+
+write_files:
+  - path: /etc/sysctl.d/99-sonarqube.conf
+    owner: root:root
+    permissions: "0644"
+    content: |
+      vm.max_map_count=524288
+      fs.file-max=131072
+
+runcmd:
+  - [sysctl, --system]
+  - [install, -m, "0755", -d, /etc/apt/keyrings]
+  - [sh, -c, "curl --proto '=https' --tlsv1.2 --fail --silent --show-error https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc"]
+  - [chmod, a+r, /etc/apt/keyrings/docker.asc]
+  - [sh, -c, '. /etc/os-release && printf "Types: deb\nURIs: https://download.docker.com/linux/ubuntu\nSuites: %s\nComponents: stable\nArchitectures: %s\nSigned-By: /etc/apt/keyrings/docker.asc\n" "${UBUNTU_CODENAME:-$VERSION_CODENAME}" "$(dpkg --print-architecture)" > /etc/apt/sources.list.d/docker.sources']
+  - [apt-get, update]
+  - [sh, -c, "DEBIAN_FRONTEND=noninteractive apt-get install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin"]
+  - [systemctl, enable, --now, docker.service]
+
+final_message: "SonarQube host prerequisites and Docker Engine bootstrap completed"

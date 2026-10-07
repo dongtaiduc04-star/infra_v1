@@ -1,0 +1,8 @@
+# Azure bootstrap scripts run on Linux and must retain LF line endings even
+# when this repository is checked out from Windows with core.autocrlf enabled.
+azure/*.tf text eol=lf
+azure/*.tftpl text eol=lf
+azure/*.hcl text eol=lf
+azure/*.md text eol=lf
+azure/**/*.sh text eol=lf
+azure/**/*.yaml text eol=lf

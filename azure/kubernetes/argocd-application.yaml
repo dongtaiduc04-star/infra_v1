@@ -1,0 +1,30 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: getlink-dtd
+  namespace: argocd
+  annotations:
+    argocd.argoproj.io/compare-options: ServerSideDiff=true
+  finalizers:
+    - resources-finalizer.argocd.argoproj.io
+spec:
+  project: getlink-dtd
+  source:
+    repoURL: https://github.com/dongtaiduc04-star/helm_v1.git
+    targetRevision: main
+    path: helm/getlink-dtd
+    helm:
+      valueFiles:
+        - values.yaml
+        - values-azure.yaml
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: getlink-dtd
+  syncPolicy:
+    automated:
+      enabled: false
+      prune: false
+      selfHeal: false
+    syncOptions:
+      - CreateNamespace=true
+      - ServerSideApply=true

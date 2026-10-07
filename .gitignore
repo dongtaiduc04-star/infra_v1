@@ -1,0 +1,53 @@
+# Terraform
+.terraform/
+*.tfstate
+*.tfstate.*
+.terraform.lock.hcl
+.terraform.tfstate.lock.info
+
+# Terraform saved plans
+*.tfplan
+tfplan*
+*.tfvars
+*.tfvars.json
+!*.tfvars.example
+!*.tfvars.json.example
+
+# Keep the provider selections for the isolated Azure root reproducible.
+!azure/.terraform.lock.hcl
+
+# Local environment and credentials
+.env
+.env.*
+!.env.example
+!.env.*.example
+*.pem
+*.key
+*.pfx
+*.p12
+kubeconfig
+kubeconfig-*
+
+# Private audit files and backups
+.security-publication/
+gitleaks-report*.json
+*.bundle
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Private backend configuration and local validation caches
+backend.hcl
+backend.*.hcl
