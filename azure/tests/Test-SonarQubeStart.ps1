@@ -128,7 +128,7 @@ function az {
     $State = $global:SonarStartTestState
     $Operation = @($args[0], $args[1]) -join " "
     [void]$State.AzureCalls.Add($Operation)
-    Assert-True (($args -join " ").Contains("vm-getlink-dtd-example-sonarqube")) "A command targeted a VM other than the dedicated SonarQube VM."
+    Assert-True (($args -join " ").Contains("vm-getlink-dtd-portfolio-sonarqube")) "A command targeted a VM other than the dedicated SonarQube VM."
     switch ($Operation) {
         "vm start" {
             $global:LASTEXITCODE = $State.CurrentCase.StartExit

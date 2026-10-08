@@ -13,7 +13,7 @@ tfplan*
 !*.tfvars.example
 !*.tfvars.json.example
 
-# Keep the provider selections for the isolated Azure root reproducible.
+# Keep the provider selections for the shared Azure root reproducible.
 !azure/.terraform.lock.hcl
 
 # Local environment and credentials

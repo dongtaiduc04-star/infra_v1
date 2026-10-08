@@ -1,7 +1,7 @@
 [CmdletBinding()]
 param(
-    [string]$ResourceGroup = "rg-getlink-dtd-example-mw",
-    [string]$VmName = "vm-getlink-dtd-example-sonarqube"
+    [string]$ResourceGroup = "rg-getlink-dtd-portfolio-mw",
+    [string]$VmName = "vm-getlink-dtd-portfolio-sonarqube"
 )
 
 $ErrorActionPreference = "Stop"

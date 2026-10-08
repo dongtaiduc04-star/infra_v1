@@ -9,7 +9,7 @@ ssh_public_key_path = "~/.ssh/azure_k3s_ed25519.pub"
 # These safe, non-secret defaults are shown for clarity. The Cloudflare Tunnel
 # token and SonarQube analysis token must never be placed in tfvars.
 sonarqube_private_ip_address = "10.60.1.20"
-sonarqube_hostname           = "sonar.example.com"
+sonarqube_hostname           = "sonar-azure.dongtaiduc.me"
 sonarqube_image              = "sonarqube:26.9.0.129388-community"
 sonarqube_postgres_image     = "postgres:18.6-bookworm"
 sonarqube_cloudflared_image  = "cloudflare/cloudflared:2026.9.3"

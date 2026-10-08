@@ -49,3 +49,6 @@ jobs:
       - name: Run mocked startup tests
         shell: pwsh
         run: ./azure/tests/Test-SonarQubeStart.ps1
+      - name: Check inactive shared-infrastructure preparation
+        shell: pwsh
+        run: ./azure/scripts/Test-SharedInfrastructurePreparation.ps1

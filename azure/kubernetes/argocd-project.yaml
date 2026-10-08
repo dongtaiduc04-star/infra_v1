@@ -6,6 +6,7 @@ metadata:
 spec:
   description: GetLink DTD on the Azure for Students k3s VM
   sourceRepos:
+    - https://github.com/dongtaiduc04-star/helm.git
     - https://github.com/dongtaiduc04-star/helm_v1.git
   destinations:
     - namespace: getlink-dtd

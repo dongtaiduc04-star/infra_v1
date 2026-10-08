@@ -1,65 +1,80 @@
-# infra_v1 — GetLink Azure infrastructure examples
+# infra_v1 — GetLink Azure infrastructure
 
-A source-only portfolio publication, not the state or control repository for
-the owner's running infrastructure. Its only Terraform root is `azure/`,
-with private k3s and SonarQube VM examples and cost-control helpers.
+This public Azure-only repository is being prepared as an alternative control
+source for the SAME existing GetLink environment as the private `infra`
+repository. It is not a new environment, and preparation has not activated it.
+The original repository and deployed resources remain unchanged by these edits.
 
-Run Terraform from `azure/` or use `terraform -chdir=azure` from this repository.
+Companion repositories: [app_v1](https://github.com/dongtaiduc04-star/app_v1)
+and [helm_v1](https://github.com/dongtaiduc04-star/helm_v1).
 
-Companion copies:
-[app_v1](https://github.com/dongtaiduc04-star/app_v1) and
-[helm_v1](https://github.com/dongtaiduc04-star/helm_v1).
+## Shared existing environment
 
-## Safety boundary
+The Azure root preserves the original Terraform resource addresses and defaults:
+`rg-getlink-dtd-portfolio-mw`, `vm-getlink-dtd-portfolio`,
+`vm-getlink-dtd-portfolio-sonarqube`, Malaysia West. The applications reuse
+their existing namespace, data, secrets, images, SonarQube, and Cloudflare routes;
+there is no separate v1 VM, database or state.
 
-Cloud resources, Terraform state, credentials, private keys and kubeconfigs
-are not included. The backend definitions intentionally omit the real storage
-locations. `azure/backend.hcl.example` shows the fields an operator must supply
-in a private `azure/backend.hcl`, only after selecting a state store they own.
+The public backend identifiers in `azure/backend.tf` describe the existing
+PRIVATE Azure state store. They are not credentials or the state body. Never
+create a new state, migrate/copy state, import the old resources into another
+state, or manage the same resources concurrently from `infra` and `infra_v1`.
 
-Do not connect this copy to the original environment's backend. Do not migrate
-or copy state from it. Never run `terraform apply`, `terraform destroy`,
-`kubectl apply`, or VM start/stop scripts just to view or validate the source.
-Actual deployment requires separate authorization, credentials, review and
-budget. Stopped VMs may still incur storage charges.
+Exactly one repository may be selected for Terraform operations at a time.
+`azure/shared-control.preparation.json` intentionally has activation disabled
+and no selected controller. A successful preparation check does not enable a
+deployment. See [the shared-control runbook](azure/SHARED-CONTROL.md).
 
-Argo CD examples refer to `helm_v1` and have automatic synchronization
-disabled. Domains, registries and helper defaults are examples.
-The public application workflow does not publish images or update Helm values.
-Optional private-repository bootstrap requires an explicit `HELM_REPO_URL`;
-a public Helm repository can normally be read without such a credential.
+## Checks-only infrastructure CI
 
-## Checks-only CI
+CI remains read-only and has no Azure identity or deployment secrets. It uses
+Terraform 1.16.4 with the reviewed AzureRM 4.81.0 Windows/Linux lock. It checks
+formatting, initializes provider packages with `-backend=false -lockfile=readonly`,
+and validates source. It never initializes the real backend, reads state, plans,
+applies, destroys, starts VMs or synchronizes Argo CD.
 
-CI has read-only repository permissions, no cloud identity and no deployment
-secrets. Terraform 1.16.4 is used to run formatting checks, then
-`init -backend=false` and `validate` in the Azure root only.
-Initialization may download provider packages; it does not initialize the
-configured remote state backend. No plan/apply/destroy is run.
+Offline checks exercise the SonarQube startup helper with mock Azure and HTTP
+calls, and check inactive preparation/source parity:
 
-A separate offline regression job exercises the SonarQube startup helper using
-mock Azure calls, HTTP responses and delays. It does not start a VM.
-
-```sh
-terraform fmt -check -recursive
-terraform -chdir=azure init -backend=false -input=false -lockfile=readonly
-terraform -chdir=azure validate -no-color
-pwsh -NoProfile -File azure/tests/Test-SonarQubeStart.ps1
+```powershell
+.\azure\scripts\Test-SharedInfrastructurePreparation.ps1
+.\azure\tests\Test-SonarQubeStart.ps1
 ```
 
-Formatting and validation do not prove cloud policy compliance, affordability,
-or deployment success. Review provider versions and security recommendations
-before adapting these portfolio examples to any real environment.
+For Terraform source validation, use an isolated copy and private
+`TF_DATA_DIR`; never reuse a production `.terraform` directory. Formatting and
+validation are not proof of cloud deployment, database compatibility or cost.
+
+## One application, two selectable Helm sources
+
+The prepared AppProject permits only the existing `helm` and `helm_v1` URLs.
+The prepared Application selects `helm_v1`, but automatic sync, prune and
+self-heal remain disabled. Do not apply it blindly: inspect the live existing
+`getlink-dtd` Application and rendered diff first, then explicitly authorize
+a source switch and initial manual Sync. The chosen steady-state mode is
+automatic synchronization from the selected Helm source, activated only after
+the separately approved cutover and checks. Do not create a second Application
+or delete/recreate the existing one. Restoring an image tag does not restore data.
+
+## Private material and operational helpers
+
+No state, saved plans, private tfvars, storage keys, tokens, passwords, private
+keys or kubeconfigs belong in Git. Existing helper defaults now point to the
+shared original environment. Start/stop/bootstrap/secret/tunnel scripts can
+mutate it and are NOT publication steps or offline checks. Do not run them just
+because CI is green. Stopped VMs still incur disk/storage cost.
+
+Read [azure/README.md](azure/README.md) and the shared-control runbook before any
+separately approved operational action.
 
 ## Source provenance, access and licensing
 
 The original infrastructure/GitOps layout referenced a Vprofile learning
 project. The maintainer reports that AI generated the source at their request;
-this is not a guarantee of originality or third-party licensing compliance.
-Neither AI generation nor a clean Git history establishes ownership of all
-source. Preserve any applicable third-party licenses and notices.
+this does not establish ownership or third-party licensing compliance.
+Preserve applicable third-party licenses and notices.
 
 Only the owner is intended to have write/merge access. See
 [CONTRIBUTING.md](CONTRIBUTING.md) and [SECURITY.md](SECURITY.md).
-No new MIT or other open-source license has been granted; existing third-party
-licenses and notices remain applicable.
+No new MIT or other open-source license has been granted.

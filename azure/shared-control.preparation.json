@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "activationEnabled": false,
+  "selectedController": null,
+  "allowedControllers": ["infra", "infra_v1"],
+  "canonicalAzureRootCommit": "6352ee7a2a309425badb76b4c6bf99480a06d532",
+  "subscriptionId": "529b5eb6-35b8-4998-a690-d34b60f28ca7",
+  "resourceGroup": "rg-getlink-dtd-portfolio-mw",
+  "appVm": "vm-getlink-dtd-portfolio",
+  "sonarVm": "vm-getlink-dtd-portfolio-sonarqube",
+  "appHostname": "getlink-azure.dongtaiduc.me",
+  "sonarHostname": "sonar-azure.dongtaiduc.me",
+  "backend": {
+    "resource_group_name": "rg-getlink-tfstate",
+    "storage_account_name": "stgetlinktf498374",
+    "container_name": "tfstate",
+    "key": "azure-k3s.tfstate",
+    "use_azuread_auth": true,
+    "use_cli": true
+  },
+  "existingStateVerified": false,
+  "liveArgoVerified": false,
+  "canonicalTextSha256": {
+    "main.tf": "1322f079b18e65f21e089a84e9ed645ee9bc71cab893ec09a0578bd5290389ac",
+    "outputs.tf": "702ff407421d46f1eee90de2b04a968d9a94da8f753e467ab2203f0db43bfa28",
+    "providers.tf": "86f53e037a5b8c98f06133e05ce13f7f213f451d1c529e08780ef875abcd012f",
+    "versions.tf": "eda8d1ac87b51e8f4adb4c7f54a3e63e4f96bdf774ffa82eadf32f0fd0b4e6ca",
+    "variables.tf": "fa56f0fab77f16af3684c01caab98f26f5e74bab93caee7912185d0d0bcda452",
+    "terraform.tfvars.example": "177479efc878a18472821262eba93ee0daa0def45221a5a80c03a133f6cd1a1c",
+    "cloud-init.yaml.tftpl": "d75dc974f35b3391c1255b458dc3cf47835e215133cc27f3ad2c4ca7955065b7",
+    "sonarqube-cloud-init.yaml": "79f515faea9adef4d3cf905de408e9f7f1744e1790216f996dcb667542318250",
+    "scripts/bootstrap-sonarqube.sh": "b04418ef8f55828450fe0c9ea60d1f992f9091a0aa8bf8e5c26efa87ce890867",
+    "scripts/configure-self-deallocate.sh": "11bec85403d6d3d563dceda73bbb4b129d8bed6478a004547594a6df18e08ce3",
+    "scripts/install-argocd.sh": "9375aab438544191be62fffc41f9d872817be99abb4cb61a06ad835d65495959",
+    "scripts/create-app-secrets.sh": "4c59cab09ed9de33379facb8b080e4190061254d05f97fc225200e0126bd7ef3",
+    "scripts/configure-ghcr-pull-secret.sh": "452259c20e7718399fd872c9657156f5a7047f616060d57522aeb9d4f160fe6e",
+    "scripts/configure-cloudflare-token.sh": "077e65ede3fb82761441b4e5cef2319d4fc41ad2decddd396275123ba2fd4bd1",
+    "scripts/configure-sonarqube-admin-password.sh": "4be6fc8494b36219fdd9ec0c01bb723d46b430ad6e76e91ecd689f96365afd61",
+    "scripts/configure-sonarqube-cloudflare-token.sh": "e1707429bcc0dd0aac6fef889e78b5dcda4d44c9634112ebdd0896fd7efe1ea8",
+    "kubernetes/cloudflared.yaml": "a8b4831aec93ed2c000362deacbc6fa872ef2c3c95a5dae93e790ee74af3e772"
+  }
+}

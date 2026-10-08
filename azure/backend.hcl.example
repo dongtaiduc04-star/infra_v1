@@ -1,5 +1,9 @@
-# Copy to private backend.hcl only after choosing a state store you own.
-resource_group_name  = "replace-with-your-state-resource-group"
-storage_account_name = "replacewithyourstateaccount"
+# Reference only: the same identifiers are already set in backend.tf.
+# Do not copy/use this file to select a new state store or migrate state.
+# No storage key, SAS token, client secret or actual state belongs in Git.
+resource_group_name  = "rg-getlink-tfstate"
+storage_account_name = "stgetlinktf498374"
 container_name       = "tfstate"
-key                  = "getlink-example/azure/terraform.tfstate"
+key                  = "azure-k3s.tfstate"
+use_azuread_auth     = true
+use_cli              = true

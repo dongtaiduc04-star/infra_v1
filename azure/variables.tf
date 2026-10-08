@@ -18,7 +18,7 @@ variable "project_name" {
 variable "environment" {
   description = "Deployment environment name."
   type        = string
-  default     = "example"
+  default     = "portfolio"
 }
 
 variable "vm_size" {
@@ -57,7 +57,7 @@ variable "sonarqube_private_ip_address" {
 variable "sonarqube_hostname" {
   description = "Public hostname that will be routed through the separately managed Cloudflare Tunnel. Terraform does not create this DNS record or store the tunnel token."
   type        = string
-  default     = "sonar.example.com"
+  default     = "sonar-azure.dongtaiduc.me"
 
   validation {
     condition     = can(regex("^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?(?:\\.[a-z0-9](?:[a-z0-9-]*[a-z0-9])?)+$", var.sonarqube_hostname))

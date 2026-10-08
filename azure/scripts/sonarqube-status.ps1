@@ -1,8 +1,8 @@
 [CmdletBinding()]
 param(
-    [string]$ResourceGroup = "rg-getlink-dtd-example-mw",
-    [string]$VmName = "vm-getlink-dtd-example-sonarqube",
-    [string]$PublicUrl = "https://sonar.example.com"
+    [string]$ResourceGroup = "rg-getlink-dtd-portfolio-mw",
+    [string]$VmName = "vm-getlink-dtd-portfolio-sonarqube",
+    [string]$PublicUrl = "https://sonar-azure.dongtaiduc.me"
 )
 
 $ErrorActionPreference = "Stop"
