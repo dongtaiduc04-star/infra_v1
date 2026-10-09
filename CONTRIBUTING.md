@@ -16,4 +16,5 @@ public contributions. Follow SECURITY.md for sensitive reports.
 Owner changes should use a branch and pull request, run the documented checks,
 and be reviewed before merge. Do not add auto-merge, automatic deployment, image
 publishing, cloud login or cross-repository write access without a new security
-review. CI is verification only and should not receive deployment secrets.
+review. This copy has no GitHub Terraform apply workflow. Infrastructure changes
+remain manual, using the same verified private state and one selected operator.

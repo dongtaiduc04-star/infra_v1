@@ -4,16 +4,9 @@ set -euo pipefail
 : "${GITHUB_USERNAME:?GITHUB_USERNAME protected parameter is required}"
 : "${GITHUB_TOKEN:?GITHUB_TOKEN protected parameter is required}"
 
-# Optional registration for the ORIGINAL private Helm repo only.
-# Public helm_v1 needs no Git token. Never repoint/overwrite the old repo Secret
-# to another URL while the existing environment may still use it.
 namespace="argocd"
 secret_name="getlink-dtd-helm-repo"
-repo_url="${HELM_REPO_URL:-https://github.com/dongtaiduc04-star/helm.git}"
-if [[ "${repo_url}" != "https://github.com/dongtaiduc04-star/helm.git" ]]; then
-  echo "Only the existing private Helm repository is allowed; public helm_v1 needs no repository Secret." >&2
-  exit 1
-fi
+repo_url="https://github.com/dongtaiduc04-star/helm.git"
 
 k3s kubectl create secret generic "${secret_name}" \
   --namespace "${namespace}" \

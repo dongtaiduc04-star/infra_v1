@@ -8,9 +8,6 @@ metadata:
   finalizers:
     - resources-finalizer.argocd.argoproj.io
 spec:
-  # Preparation only. Update the EXISTING getlink-dtd Application after live
-  # diff review; do not create a second Application or delete/recreate this one.
-  # Its AppProject permits both Helm URLs, but only this selected URL is watched.
   project: getlink-dtd
   source:
     repoURL: https://github.com/dongtaiduc04-star/helm_v1.git
@@ -24,12 +21,10 @@ spec:
     server: https://kubernetes.default.svc
     namespace: getlink-dtd
   syncPolicy:
-    # Keep manual Sync for the source switch. Local files do not prove the
-    # current live Application has autosync disabled.
     automated:
-      enabled: false
-      prune: false
-      selfHeal: false
+      enabled: true
+      prune: true
+      selfHeal: true
     syncOptions:
       - CreateNamespace=true
       - ServerSideApply=true

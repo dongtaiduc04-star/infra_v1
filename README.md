@@ -1,72 +1,68 @@
 # infra_v1 — GetLink Azure infrastructure
 
-This public Azure-only repository is being prepared as an alternative control
-source for the SAME existing GetLink environment as the private `infra`
-repository. It is not a new environment, and preparation has not activated it.
-The original repository and deployed resources remain unchanged by these edits.
+Public Azure-only copy of the existing GetLink infrastructure and operational
+helpers. It reuses the original Azure resources, data, secrets, SonarQube and
+Cloudflare routes. The original private repositories remain unchanged.
 
 Companion repositories: [app_v1](https://github.com/dongtaiduc04-star/app_v1)
 and [helm_v1](https://github.com/dongtaiduc04-star/helm_v1).
 
-## Shared existing environment
+## Everyday workflow
 
-The Azure root preserves the original Terraform resource addresses and defaults:
-`rg-getlink-dtd-portfolio-mw`, `vm-getlink-dtd-portfolio`,
-`vm-getlink-dtd-portfolio-sonarqube`, Malaysia West. The applications reuse
-their existing namespace, data, secrets, images, SonarQube, and Cloudflare routes;
-there is no separate v1 VM, database or state.
+1. In Azure Portal, start the existing GetLink application and SonarQube VMs.
+2. Check [SonarQube](https://sonar-azure.dongtaiduc.me) is available.
+3. Push code to `app_v1/main`. Its Azure workflow tests/builds, runs Sonar and
+   Quality Gate, publishes the four existing GHCR images and updates
+   `helm_v1/helm/getlink-dtd/values-azure.yaml`.
+4. The ONE existing Argo Application follows `helm_v1/main` and automatically
+   deploys. Check [GetLink](https://getlink-azure.dongtaiduc.me) in the browser.
+5. Stop/deallocate the two VMs in Azure Portal after the work session.
 
-The public backend identifiers in `azure/backend.tf` describe the existing
-PRIVATE Azure state store. They are not credentials or the state body. Never
-create a new state, migrate/copy state, import the old resources into another
-state, or manage the same resources concurrently from `infra` and `infra_v1`.
+No Terraform apply, bootstrap, empty activation commit or repo-source switch
+is needed for an ordinary application release. See [daily operations](azure/README.md).
 
-Exactly one repository may be selected for Terraform operations at a time.
-`azure/shared-control.preparation.json` intentionally has activation disabled
-and no selected controller. A successful preparation check does not enable a
-deployment. See [the shared-control runbook](azure/SHARED-CONTROL.md).
+The owner confirmed this flow on **2026-10-08** with app SHA
+`d6a86653ec927e5049de476ee67d0d66e2a9c437` and Helm revision
+`6f05266eb2e3034f28c8d5492c5c20a1fa1307dc`: Argo Synced/Healthy,
+all four application Pods and MySQL Ready, and the website working.
+This is a dated confirmation, not an uptime guarantee.
 
-## Checks-only infrastructure CI
+## Existing infrastructure, manual Terraform
 
-CI remains read-only and has no Azure identity or deployment secrets. It uses
-Terraform 1.16.4 with the reviewed AzureRM 4.81.0 Windows/Linux lock. It checks
-formatting, initializes provider packages with `-backend=false -lockfile=readonly`,
-and validates source. It never initializes the real backend, reads state, plans,
-applies, destroys, starts VMs or synchronizes Argo CD.
+The `azure` root retains the original Azure resource definitions and addresses.
+It uses `rg-getlink-dtd-portfolio-mw`, `vm-getlink-dtd-portfolio` and
+`vm-getlink-dtd-portfolio-sonarqube` in Malaysia West; there is no second v1
+VM, namespace, database, state store, Sonar project or tunnel.
 
-Offline checks exercise the SonarQube startup helper with mock Azure and HTTP
-calls, and check inactive preparation/source parity:
+Terraform remains manual as in the original Azure project. No Terraform
+control-source handover to `infra_v1` has occurred. An application release does
+not verify state lineage or select a Terraform writer. For an actual
+infrastructure change, review the SAME private Azure state and variables,
+select exactly ONE source/operator for that session, then review the saved plan.
+Never manage these resources concurrently from `infra` and `infra_v1`, migrate
+state or initialize a fresh empty state. Read [shared control](azure/SHARED-CONTROL.md).
+
+## Infrastructure operations and helpers
+
+Like the original Azure infrastructure, this copy has no automated GitHub
+Terraform apply workflow. Keep reviewed AzureRM 4.81.0 Windows/Linux hashes;
+validate source without contacting the live backend when no infrastructure
+change is intended.
+
+Sonar helpers and their existing tests retain the original Azure source.
+The helpers use the Azure CLI's current account/subscription: verify it is the
+recorded Azure for Students subscription before invoking any helper. GUI-first
+daily operation avoids depending on local CLI account selection. Offline tests
+mock Azure/HTTP; no cloud is contacted:
 
 ```powershell
-.\azure\scripts\Test-SharedInfrastructurePreparation.ps1
 .\azure\tests\Test-SonarQubeStart.ps1
 ```
 
-For Terraform source validation, use an isolated copy and private
-`TF_DATA_DIR`; never reuse a production `.terraform` directory. Formatting and
-validation are not proof of cloud deployment, database compatibility or cost.
-
-## One application, two selectable Helm sources
-
-The prepared AppProject permits only the existing `helm` and `helm_v1` URLs.
-The prepared Application selects `helm_v1`, but automatic sync, prune and
-self-heal remain disabled. Do not apply it blindly: inspect the live existing
-`getlink-dtd` Application and rendered diff first, then explicitly authorize
-a source switch and initial manual Sync. The chosen steady-state mode is
-automatic synchronization from the selected Helm source, activated only after
-the separately approved cutover and checks. Do not create a second Application
-or delete/recreate the existing one. Restoring an image tag does not restore data.
-
-## Private material and operational helpers
-
-No state, saved plans, private tfvars, storage keys, tokens, passwords, private
-keys or kubeconfigs belong in Git. Existing helper defaults now point to the
-shared original environment. Start/stop/bootstrap/secret/tunnel scripts can
-mutate it and are NOT publication steps or offline checks. Do not run them just
-because CI is green. Stopped VMs still incur disk/storage cost.
-
-Read [azure/README.md](azure/README.md) and the shared-control runbook before any
-separately approved operational action.
+Bootstrap/credential/tunnel scripts are retained for separately reviewed
+recovery/provisioning, not ordinary delivery. Do not recreate PVCs or reset
+secrets to start a session. State, saved plans, actual private tfvars, passwords,
+tokens, private keys and kubeconfigs stay out of Git.
 
 ## Source provenance, access and licensing
 

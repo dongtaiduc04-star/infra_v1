@@ -8,8 +8,9 @@ Security tab to report privately. Otherwise ask the maintainer, without
 including sensitive details, for a private reporting channel. Do not assume
 that an ordinary issue or pull request is confidential.
 
-Public CI only runs verification with read-only repository permissions. It
-does not use deployed databases, cloud credentials or production resources.
+This Azure copy has no GitHub Terraform apply workflow, just like the original.
+Terraform and operational helpers use an authorized owner's private session;
+they are not publication checks. No deployment credential belongs in Git.
 Examples that name a Secret contain references only; real values must be
 supplied outside Git. An operator must change any factory/demo credential
 before exposing a real service.
